@@ -1,7 +1,7 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Square from '../Square/Square'
 
-function Row() {
+function Row({autoFocus}) {
   const [word, setWord] = useState(['', '', '', '', '']);
 
   const handleSquare = (index, letter) => {
@@ -13,10 +13,10 @@ function Row() {
   useEffect(() => {
     console.log(word);
   }, [word]);
-
+  
   return (
     <div className='is-flex'>
-        <Square index={0} onLetterChange={handleSquare}/>
+        <Square index={0} onLetterChange={handleSquare} autoFocus={autoFocus}/>
         <Square index={1} onLetterChange={handleSquare}/>
         <Square index={2} onLetterChange={handleSquare}/>
         <Square index={3} onLetterChange={handleSquare}/>

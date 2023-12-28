@@ -5,7 +5,7 @@ function RowContainer() {
 
   return (
     <div className='is-flex-direction-column'>
-        <Row/>
+        <Row autoFocus/>
         <Row/>
         <Row/>
         <Row/>
