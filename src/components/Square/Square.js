@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState} from 'react';
 
-function Square({index, onLetterChange, autoFocus, display}) {
+function Square({index, onLetterChange, autoFocus, background}) {
   const [letter, setLetter] = useState('');
   const [prevValue, setPrevValue] = useState('');
   const [squareFilled, setSquareFilled] = useState(false);
@@ -11,6 +11,10 @@ function Square({index, onLetterChange, autoFocus, display}) {
       inputRef.current.focus();
     }
   },[autoFocus]);
+
+  useEffect(() => {
+    inputRef.current.style.background = background;
+  }, [background]);
   
   const handleChange = (e)=>{
     const newLetter = e.target.value.toUpperCase();
@@ -38,7 +42,7 @@ function Square({index, onLetterChange, autoFocus, display}) {
   
   
   return (
-    <div >
+    <div style={{ background: background }}>
         <input 
         id={`square-${index}`}
         className="input" 

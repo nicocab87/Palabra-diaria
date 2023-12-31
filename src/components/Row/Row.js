@@ -4,7 +4,8 @@ import wordOfDay from '../../word';
 
 function Row({autoFocus}) {
   const [word, setWord] = useState(['', '', '', '', '']);
-  const [wordComplete, setWordComplete] = useState(false)
+  const [wordComplete, setWordComplete] = useState(false);
+  const [background, setBackground] = useState([])
 
   const handleSquare = (index, letter) => {
     const updatedWord = [...word];
@@ -12,7 +13,10 @@ function Row({autoFocus}) {
     setWord(updatedWord);
   };
 
+
   useEffect(() => {
+    const handleEnterKeyPress = (event) => {(event.key === 'Enter' && wordComplete) && wordCompared(word,wordOfDay)}
+    console.log(wordComplete)
     console.log(word);
     (!word.includes(``) && setWordComplete(true));
     window.addEventListener('keydown', handleEnterKeyPress);
@@ -23,39 +27,33 @@ function Row({autoFocus}) {
   }, [word, wordComplete]
   );
 
-  const handleEnterKeyPress = (event) => {
-    if (event.key === 'Enter' && wordComplete) {
-
-      if (arraysAreEqual(word, wordOfDay)) {
-        wordCompared()
-      } else {
-        console.log('Los arrays son diferentes.');
-      }
-    }
-  };
+  
 
   const wordCompared = (arr1, arr2)=>{
-    
-  }
 
-  const arraysAreEqual = (arr1, arr2) => {
-    return JSON.stringify(arr1) === JSON.stringify(arr2);
-  };
+    arr1.map(letter => {
+      const indexOfLetter1 = arr1.indexOf(letter)
+      if(arr2.includes(letter)){
+        const indexOfLetter2= arr2.indexOf(letter)
+        indexOfLetter1 === indexOfLetter2 ? setBackground(`green`) : setBackground(`yellow`)
+        console.log(indexOfLetter1, indexOfLetter2)
+      }else{
+        setBackground(`red`)
+      }
 
+    })
+}
+      
 
-
-  
-
-  
-  
+ 
   
   return (
     <div className='is-flex'>
-        <Square index={0} onLetterChange={handleSquare} autoFocus={autoFocus}/>
-        <Square index={1} onLetterChange={handleSquare} />
-        <Square index={2} onLetterChange={handleSquare} />
-        <Square index={3} onLetterChange={handleSquare} />
-        <Square index={4} onLetterChange={handleSquare} />
+        <Square index={0} onLetterChange={handleSquare} background={background} autoFocus={autoFocus}/>
+        <Square index={1} onLetterChange={handleSquare} background={background} />
+        <Square index={2} onLetterChange={handleSquare} background={background} />
+        <Square index={3} onLetterChange={handleSquare} background={background} />
+        <Square index={4} onLetterChange={handleSquare} background={background} />
     </div>
   )
 }
