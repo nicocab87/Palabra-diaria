@@ -5,7 +5,8 @@ import wordOfDay from '../../word';
 function Row({autoFocus}) {
   const [word, setWord] = useState(['', '', '', '', '']);
   const [wordComplete, setWordComplete] = useState(false);
-  const [background, setBackground] = useState([])
+  const [letterMatch, setLetterMatch] = useState([false, false, false, false, false,]);
+  const [background, setBackground] = useState(['', '', '', '', '']);
 
   const handleSquare = (index, letter) => {
     const updatedWord = [...word];
@@ -13,47 +14,59 @@ function Row({autoFocus}) {
     setWord(updatedWord);
   };
 
-
   useEffect(() => {
-    const handleEnterKeyPress = (event) => {(event.key === 'Enter' && wordComplete) && wordCompared(word,wordOfDay)}
-    console.log(wordComplete)
-    console.log(word);
-    (!word.includes(``) && setWordComplete(true));
+    const handleEnterKeyPress = (event) => {
+      if (event.key === 'Enter' && wordComplete) {
+        const updatedBackground = wordCompared(word, wordOfDay);
+        setBackground(updatedBackground);
+      }
+    };
+
     window.addEventListener('keydown', handleEnterKeyPress);
 
     return () => {
       window.removeEventListener('keydown', handleEnterKeyPress);
-    }
-  }, [word, wordComplete]
-  );
+    };
+  }, [word, wordComplete]);
 
-  
+  const wordCompared = (arr1, arr2) => {
+   
+    return arr1.map((letter, index) => {
 
-  const wordCompared = (arr1, arr2)=>{
+      const indexOfLetter2 = arr2.indexOf(letter); 
+      const indicesOfFalse = [];  
 
-    arr1.map(letter => {
-      const indexOfLetter1 = arr1.indexOf(letter)
-      if(arr2.includes(letter)){
-        const indexOfLetter2= arr2.indexOf(letter)
-        indexOfLetter1 === indexOfLetter2 ? setBackground(`green`) : setBackground(`yellow`)
-        console.log(indexOfLetter1, indexOfLetter2)
+      (letterMatch[index] === false) && indicesOfFalse.push(index);     
+
+      if (arr2.includes(letter) && index === indexOfLetter2 && indicesOfFalse.includes(indexOfLetter2)) {
+        
+        const updateMatch = [...letterMatch]
+        updateMatch[indexOfLetter2]=true
+        setLetterMatch(updateMatch)
+    
+        return 'green'
+
+      } else if (arr2.includes(letter) ) {
+        return 'yellow'
+
       }else{
-        setBackground(`red`)
+        return 'red';
       }
 
-    })
-}
-      
+    });
+  };
 
- 
+  useEffect(() => {
+    !word.includes('') && setWordComplete(true);
+  }, [word]);
   
   return (
     <div className='is-flex'>
-        <Square index={0} onLetterChange={handleSquare} background={background} autoFocus={autoFocus}/>
-        <Square index={1} onLetterChange={handleSquare} background={background} />
-        <Square index={2} onLetterChange={handleSquare} background={background} />
-        <Square index={3} onLetterChange={handleSquare} background={background} />
-        <Square index={4} onLetterChange={handleSquare} background={background} />
+        <Square index={0} onLetterChange={handleSquare} background={background[0]} autoFocus={autoFocus}/>
+        <Square index={1} onLetterChange={handleSquare} background={background[1]} />
+        <Square index={2} onLetterChange={handleSquare} background={background[2]} />
+        <Square index={3} onLetterChange={handleSquare} background={background[3]} />
+        <Square index={4} onLetterChange={handleSquare} background={background[4]} />
     </div>
   )
 }
