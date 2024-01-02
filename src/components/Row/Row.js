@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Square from '../Square/Square';
 import wordOfDay from '../../word';
 
-function Row({autoFocus}) {
+function Row({autoFocus, disabled}) {
   const [word, setWord] = useState(['', '', '', '', '']);
   const [wordComplete, setWordComplete] = useState(false);
   const [letterMatch, setLetterMatch] = useState([false, false, false, false, false,]);
@@ -30,27 +30,29 @@ function Row({autoFocus}) {
   }, [word, wordComplete]);
 
   const wordCompared = (arr1, arr2) => {
+    
    
     return arr1.map((letter, index) => {
 
       const indexOfLetter2 = arr2.indexOf(letter); 
       const indicesOfFalse = [];  
+      
 
-      (letterMatch[index] === false) && indicesOfFalse.push(index);     
-
+      (letterMatch[index] === false) && indicesOfFalse.push(index);  
+      
       if (arr2.includes(letter) && index === indexOfLetter2 && indicesOfFalse.includes(indexOfLetter2)) {
-        
         const updateMatch = [...letterMatch]
         updateMatch[indexOfLetter2]=true
         setLetterMatch(updateMatch)
-    
+        console.log(indicesOfFalse)   
+
         return 'green'
 
       } else if (arr2.includes(letter) ) {
         return 'yellow'
 
       }else{
-        return 'red';
+        return 'grey';
       }
 
     });
@@ -62,11 +64,11 @@ function Row({autoFocus}) {
   
   return (
     <div className='is-flex'>
-        <Square index={0} onLetterChange={handleSquare} background={background[0]} autoFocus={autoFocus}/>
-        <Square index={1} onLetterChange={handleSquare} background={background[1]} />
-        <Square index={2} onLetterChange={handleSquare} background={background[2]} />
-        <Square index={3} onLetterChange={handleSquare} background={background[3]} />
-        <Square index={4} onLetterChange={handleSquare} background={background[4]} />
+        <Square index={0} onLetterChange={handleSquare} background={background[0]} disabled={disabled} autoFocus={autoFocus}/>
+        <Square index={1} onLetterChange={handleSquare} background={background[1]} disabled={disabled} />
+        <Square index={2} onLetterChange={handleSquare} background={background[2]} disabled={disabled} />
+        <Square index={3} onLetterChange={handleSquare} background={background[3]} disabled={disabled} />
+        <Square index={4} onLetterChange={handleSquare} background={background[4]} disabled={disabled} />
     </div>
   )
 }

@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState} from 'react';
 
-function Square({index, onLetterChange, autoFocus, background}) {
+function Square({index, onLetterChange, autoFocus, background, disabled}) {
   const [letter, setLetter] = useState('');
   const [prevValue, setPrevValue] = useState('');
   const [squareFilled, setSquareFilled] = useState(false);
@@ -44,6 +44,7 @@ function Square({index, onLetterChange, autoFocus, background}) {
   return (
     <div style={{ background: background }}>
         <input 
+        disabled={disabled}
         id={`square-${index}`}
         className="input" 
         type="text" 
